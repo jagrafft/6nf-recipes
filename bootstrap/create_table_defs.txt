@@ -1,0 +1,13 @@
+CREATE TABLE default_masses (id INTEGER PRIMARY KEY, mass REAL NO NULL);
+CREATE TABLE ingredient_list (id INTEGER PRIMARY KEY, ingredient TEXT NO NULL);
+CREATE TABLE recipe_citation_accessed_dates (id INTEGER PRIMARY KEY, date TEXT NO NULL);
+CREATE TABLE recipe_citation_author_names (id INTEGER PRIMARY KEY, author TEXT NO NULL);
+CREATE TABLE recipe_citation_date_values (id INTEGER PRIMARY KEY, date TEXT NO NULL);
+CREATE TABLE recipe_list (id INTEGER PRIMARY KEY, recipe TEXT NO NULL);
+CREATE TABLE ingredient_ratio_lists (recipe_id INTEGER NO NULL REFERENCES recipe_list(id) ON DELETE CASCADE, ingredient_id INTEGER NO NULL REFERENCES ingredient_list(id) ON DELETE CASCADE, ratio REAL NO NULL, PRIMARY KEY (recipe_id, ingredient_id));
+CREATE TABLE recipe_citation_accessed (recipe_id INTEGER PRIMARY KEY REFERENCES recipe_list(id) ON DELETE CASCADE, date_id INTEGER NO NULL REFERENCES recipe_citation_accessed_dates(id));
+CREATE TABLE recipe_citation_authors (recipe_id INTEGER PRIMARY KEY REFERENCES recipe_list(id) ON DELETE CASCADE, author_id INTEGER NO NULL REFERENCES recipe_citation_author_names(id));
+CREATE TABLE recipe_citation_dates (recipe_id INTEGER PRIMARY KEY REFERENCES recipe_list(id) ON DELETE CASCADE, date_id INTEGER NO NULL REFERENCES recipe_citation_date_values(id));
+CREATE TABLE recipe_citation_titles (recipe_id INTEGER PRIMARY KEY REFERENCES recipe_list(id) ON DELETE CASCADE, title TEXT NO NULL);
+CREATE TABLE recipe_citation_urls (recipe_id INTEGER PRIMARY KEY REFERENCES recipe_list(id) ON DELETE CASCADE, url TEXT NO NULL);
+CREATE TABLE recipe_default_masses (recipe_id INTEGER PRIMARY KEY REFERENCES recipe_list(id) ON DELETE CASCADE, mass_id INTEGER NO NULL REFERENCES default_masses(id));
