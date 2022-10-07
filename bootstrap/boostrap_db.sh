@@ -7,11 +7,11 @@ fi
 
 DATABASE="../${1}.db"
 
-# Create tables
-while IFS= read -r create_table_line
+# Create Tables
+for sql in `ls tables/*.sql`
 do
-    sqlite3 -cmd "${create_table_line}" "${DATABASE}"
-done <<< $(cat create_table_defs.txt)
+	sqlite3 ${DATABASE} < ${sql}
+done
 
 # Populate Tables
 echo "default_masses" | xargs -I% sqlite3 ${DATABASE} ".mode csv" ".import --skip 1 ../data/%.csv %" ".exit"
