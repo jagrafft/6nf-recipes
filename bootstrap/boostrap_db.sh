@@ -13,7 +13,7 @@ do
     sqlite3 -cmd "${create_table_line}" "${DATABASE}"
 done <<< $(cat create_table_defs.txt)
 
-# Populate tables
+# Populate Tables
 echo "default_masses" | xargs -I% sqlite3 ${DATABASE} ".mode csv" ".import --skip 1 ../data/%.csv %" ".exit"
 echo "ingredient_list" | xargs -I% sqlite3 ${DATABASE} ".mode csv" ".import --skip 1 ../data/%.csv %" ".exit"
 echo "recipe_citation_author_names" | xargs -I% sqlite3 ${DATABASE} ".mode csv" ".import --skip 1 ../data/%.csv %" ".exit"
@@ -28,3 +28,6 @@ echo "recipe_citation_dates" | xargs -I% sqlite3 ${DATABASE} ".mode csv" ".impor
 echo "recipe_citation_titles" | xargs -I% sqlite3 ${DATABASE} ".mode csv" ".import --skip 1 ../data/%.csv %" ".exit"
 echo "recipe_citation_urls" | xargs -I% sqlite3 ${DATABASE} ".mode csv" ".import --skip 1 ../data/%.csv %" ".exit"
 echo "recipe_default_masses" | xargs -I% sqlite3 ${DATABASE} ".mode csv" ".import --skip 1 ../data/%.csv %" ".exit"
+
+# Create Views
+sqlite3 ${DATABASE} < views/citations.sql
