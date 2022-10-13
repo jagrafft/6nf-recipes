@@ -30,7 +30,7 @@ WITH
     FROM
       recipe_citation_dates
     LEFT JOIN recipe_citation_date_values ON
-      recipe_citation_dates.date_id = recipe_citation_date_values.id
+      recipe_citation_dates.citation_date_id = recipe_citation_date_values.id
   ),
   recipe_citation_accessed_date AS (
     SELECT
@@ -39,7 +39,7 @@ WITH
     FROM
       recipe_citation_accessed
     LEFT JOIN recipe_citation_accessed_dates ON
-      recipe_citation_accessed.date_id = recipe_citation_accessed_dates.id
+      recipe_citation_accessed.accessed_date_id = recipe_citation_accessed_dates.id
   )
 SELECT
   recipe_title.recipe_id,
