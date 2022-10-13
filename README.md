@@ -29,7 +29,7 @@ Data and SQLite database setup scripts for the Observable Notebook [Baker's Perc
 <span style="font-size: 10pt;"><sup>\*</sup> - Keys may be of airty `>= 1`.</span>
 
 | Count | Entity             | Entity Type                         | Description                                                   |
-|:-----:|:------------------:|:-----------------------------------:|:--------------------------------------------------------------|
+|:-----:|:-------------------|:------------------------------------|:--------------------------------------------------------------|
 | `7`   | `recipe_id`        | `Primary Key, Integer, Foreign Key` |                                                               |
 | `6`   | `id`               | `Primary Key, Integer`              | Integer identifier for data value, referenced by other tables |
 | `2`   | `date`             | `Text, No Null`                     | Date used as reference by table with similar name             |
