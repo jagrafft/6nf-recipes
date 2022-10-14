@@ -7,17 +7,17 @@ Data and SQLite database setup scripts for the Observable Notebook [Baker's Perc
 |:---------------------------------|:-------:|:----------------------------------|
 | `default_masses`                 | `Data`  | `id, mass`                        |
 | `ingredient_list`                | `Data`  | `id, ingredient`                  |
-| `recipe_citation_author_names`   | `Data`  | `id, author`                      |
 | `recipe_citation_accessed_dates` | `Data`  | `id, date`                        |
+| `recipe_citation_author_names`   | `Data`  | `id, author`                      |
 | `recipe_citation_date_values`    | `Data`  | `id, date`                        |
 | `recipe_list`                    | `Data`  | `id, recipe`                      |
 | `recipe_citation_authors`        | `Link`  | `recipe_id, author_id`            |
-| `ingredient_ratio_lists`         | `Value` | `recipe_id, ingredient_id, ratio` |
 | `recipe_citation_accessed`       | `Link`  | `recipe_id, accessed_date_id`     |
 | `recipe_citation_dates`          | `Link`  | `recipe_id, citation_date_id`     |
+| `recipe_default_masses`          | `Link`  | `recipe_id, mass_id`              |
+| `ingredient_ratio_lists`         | `Value` | `recipe_id, ingredient_id, ratio` |
 | `recipe_citation_titles`         | `Value` | `recipe_id, title`                |
 | `recipe_citation_urls`           | `Value` | `recipe_id, url`                  |
-| `recipe_default_masses`          | `Link`  | `recipe_id, mass_id`              |
 
 ### Summaries
 | Count | Table Type | Description                                                                  |
