@@ -33,7 +33,7 @@ Data and SQLite database setup scripts for the Observable Notebook [Baker's Perc
 | `7`   | `recipe_id`        | `Primary Key, Integer, Foreign Key` | Key of `recipe_list`                                                     |
 | `6`   | `id`               | `Primary Key, Integer`              | Integer identifier for data value, referenced by other tables            |
 | `2`   | `date`             | `Text, No Null`                     | Date, represented as one of two formats `{ YYYY-MM-DD ; [DD] Mon YYYY }` |
-| `1`   | `access_date_id`   | `Integer, No Null, Foreign Key`     | Key of `recipe_citation_accessed_dates`                                  |
+| `1`   | `accessed_date_id` | `Integer, No Null, Foreign Key`     | Key of `recipe_citation_accessed_dates`                                  |
 | `1`   | `author`           | `Text, No Null`                     | Full name of author, e.g. "Suzie Quantum, Esq."                          |
 | `1`   | `author_id`        | `Integer, Foreign Key`              | Key of `recipe_citation_authors`                                         |
 | `1`   | `citation_date_id` | `Integer, Foreign Key`              | Key of `recipe_citation_date_values`                                     |
