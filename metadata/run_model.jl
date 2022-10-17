@@ -1,4 +1,4 @@
-include("./julog-model.jl")
+include("./julog_model.jl")
 
 println("# data_key(K) #")
 goals = @julog [data_key(DK)];
