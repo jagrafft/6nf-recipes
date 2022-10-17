@@ -5,48 +5,48 @@ WITH
       recipe_id,
       title
     FROM
-      recipe_citation_titles
+      citation_titles
   ),
   recipe_url AS (
     SELECT
       recipe_id,
       url
     FROM
-      recipe_citation_urls
+      citation_urls
   ),
   recipe_author AS (
     SELECT
-      recipe_citation_authors.recipe_id,
-      recipe_citation_author_names.author
+      recipe_author_ids.recipe_id,
+      authors.author
     FROM
-      recipe_citation_authors
-    LEFT JOIN recipe_citation_author_names ON
-      recipe_citation_authors.author_id = recipe_citation_author_names.id
+      recipe_author_ids
+    LEFT JOIN authors ON
+      recipe_author_ids.author_id = authors.id
   ),
   recipe_citation_date AS (
     SELECT
-      recipe_citation_dates.recipe_id,
-      recipe_citation_date_values.date
+      recipe_citation_date_ids.recipe_id,
+      citation_dates.citation_date
     FROM
-      recipe_citation_dates
-    LEFT JOIN recipe_citation_date_values ON
-      recipe_citation_dates.citation_date_id = recipe_citation_date_values.id
+      recipe_citation_date_ids
+    LEFT JOIN citation_dates ON
+      recipe_citation_date_ids.citation_date_id = citation_dates.id
   ),
   recipe_citation_accessed_date AS (
     SELECT
-      recipe_citation_accessed.recipe_id,
-      recipe_citation_accessed_dates.date
+      recipe_access_date_ids.recipe_id,
+      citation_access_dates.access_date
     FROM
-      recipe_citation_accessed
-    LEFT JOIN recipe_citation_accessed_dates ON
-      recipe_citation_accessed.accessed_date_id = recipe_citation_accessed_dates.id
+      recipe_access_date_ids
+    LEFT JOIN citation_access_dates ON
+      recipe_access_date_ids.access_date_id = citation_access_dates.id
   )
 SELECT
   recipe_title.recipe_id,
   recipe_author.author,
   recipe_title.title,
-  recipe_citation_date.date AS citation_date,
-  recipe_citation_accessed_date.date AS access_date,
+  recipe_citation_date.citation_date AS citation_date,
+  recipe_citation_accessed_date.access_date AS access_date,
   recipe_url.url
 FROM
   recipe_title

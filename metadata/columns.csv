@@ -1,8 +1,8 @@
 id,column
 1,"recipe_id"
 2,"id"
-3,"date"
-4,"accessed_date_id"
+3,"access_date"
+4,"access_date_id"
 5,"author"
 6,"author_id"
 7,"citation_date_id"

@@ -1,4 +1,4 @@
-CREATE TABLE recipe_citation_author_names (
+CREATE TABLE authors (
     id INTEGER PRIMARY KEY,
     author TEXT NO NULL
 );
