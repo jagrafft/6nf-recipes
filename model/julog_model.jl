@@ -12,7 +12,7 @@ clauses = @julog [
     # (Key, Table, Column)
     foreign_key_assoc(access_date_id, citation_access_dates, id) <<= true,
     foreign_key_assoc(author_id, authors, id) <<= true,
-    foreign_key_assoc(citation_date_id, citation_dates, id) <<=true,
+    foreign_key_assoc(citation_date_id, citation_dates, id) <<= true,
     foreign_key_assoc(ingredient_id, ingredients, id) <<= true,
     foreign_key_assoc(mass_id, masses, id) <<= true,
     foreign_key_assoc(recipe_id, recipes, id) <<= true,
@@ -45,12 +45,12 @@ clauses = @julog [
     table_column(recipes, id) <<= true,
     table_column(recipes, recipe) <<= true,
     # Rules #
-    data_key(K) <<= table_column(_,K) & !foreign_key_assoc(K,_,_) & !primary_key(K),
-    foreign_key(K) <<= table_column(_,K) & foreign_key_assoc(K,_,_),
+    data_key(K) <<= table_column(_, K) & !foreign_key_assoc(K, _, _) & !primary_key(K),
+    foreign_key(K) <<= table_column(_, K) & foreign_key_assoc(K, _, _),
     # { FK => Foreign Key, DA => Data Column,
     #   PFK => Primary Foreign Key, PK => Primary Key }
     col(T, K, "DA") <<= table_column(T, K) & !primary_key(K) & !foreign_key(K),
     col(T, K, "FK") <<= table_column(T, K) & !primary_key(K) & foreign_key(K),
     col(T, K, "PFK") <<= table_column(T, K) & primary_key(K) & foreign_key(K),
-    col(T, K, "PK") <<= table_column(T, K) & primary_key(K) & !foreign_key(K)
+    col(T, K, "PK") <<= table_column(T, K) & primary_key(K) & !foreign_key(K),
 ]
