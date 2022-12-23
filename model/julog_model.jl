@@ -44,13 +44,18 @@ clauses = @julog [
     table_column(recipe_mass_ids, mass_id) <<= true,
     table_column(recipes, id) <<= true,
     table_column(recipes, recipe) <<= true,
+    write_rank("DATA_TABLE", 1) <<= true,
+    write_rank("LINK_TABLE", 2) <<= true,
+    write_rank("VALUE_TABLE", 2) <<= true,
     # Rules #
     data_key(K) <<= table_column(_, K) & !foreign_key_assoc(K, _, _) & !primary_key(K),
     foreign_key(K) <<= table_column(_, K) & foreign_key_assoc(K, _, _),
-    # { FK => Foreign Key, DA => Data Column,
-    #   PFK => Primary Foreign Key, PK => Primary Key }
-    col(T, K, "DA") <<= table_column(T, K) & !primary_key(K) & !foreign_key(K),
-    col(T, K, "FK") <<= table_column(T, K) & !primary_key(K) & foreign_key(K),
-    col(T, K, "PFK") <<= table_column(T, K) & primary_key(K) & foreign_key(K),
-    col(T, K, "PK") <<= table_column(T, K) & primary_key(K) & !foreign_key(K),
+    column_type(T, C, "DATA_COLUMN") <<= table_column(T, C) & !primary_key(C) & !foreign_key(C),
+    column_type(T, C, "FOREIGN_KEY") <<= table_column(T, C) & !primary_key(C) & foreign_key(C),
+    column_type(T, C, "PRIMARY_FOREIGN_KEY") <<= table_column(T, C) & and(primary_key(C), foreign_key(C)),
+    column_type(T, C, "PRIMARY_KEY") <<= table_column(T, C) & primary_key(C) & !foreign_key(C),
+    table_type(T, "DATA_TABLE") <<= column_type(T, _, "PRIMARY_KEY") & column_type(T, _, "DATA_COLUMN"),
+    table_type(T, "LINK_TABLE") <<= column_type(T, _, "PRIMARY_FOREIGN_KEY") & column_type(T, _, "FOREIGN_KEY"),
+    table_type(T, "VALUE_TABLE") <<= column_type(T, _, "PRIMARY_FOREIGN_KEY") & column_type(T, _, "DATA_COLUMN"),
+    table_write_rank(Y, T, R) <<= table_type(T, Y) & write_rank(Y, R)
 ]

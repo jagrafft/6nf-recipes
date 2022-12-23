@@ -10,6 +10,12 @@
 
 #### Example Output
 ```julia
+# primary_key(K) #
+satisfied: true
+  {K => id}
+  {K => ingredient_id}
+  {K => recipe_id}
+
 # data_key(K) #
 satisfied: true
   {K => author}
@@ -31,34 +37,49 @@ satisfied: true
   {K => citation_date_id}
   {K => mass_id}
 
-# col(Column(A), Key(B), Type(C)) #
-PK => Primary Key, FK => Foreign Key, PFK => Primary Foreign Key, DA => Data Column
+# column_type(Type(Y), Column(C), Table(T)) #
 satisfied: true
-  {A => authors, B => author, C => DA}
-  {A => bakers_percentages, B => ratio, C => DA}
-  {A => citation_access_dates, B => access_date, C => DA}
-  {A => citation_dates, B => citation_date, C => DA}
-  {A => citation_titles, B => title, C => DA}
-  {A => citation_urls, B => url, C => DA}
-  {A => ingredients, B => ingredient, C => DA}
-  {A => masses, B => mass, C => DA}
-  {A => recipes, B => recipe, C => DA}
-  {A => authors, B => id, C => PK}
-  {A => citation_access_dates, B => id, C => PK}
-  {A => citation_dates, B => id, C => PK}
-  {A => ingredients, B => id, C => PK}
-  {A => masses, B => id, C => PK}
-  {A => recipes, B => id, C => PK}
-  {A => recipe_access_date_ids, B => access_date_id, C => FK}
-  {A => recipe_author_ids, B => author_id, C => FK}
-  {A => recipe_citation_date_ids, B => citation_date_id, C => FK}
-  {A => recipe_mass_ids, B => mass_id, C => FK}
-  {A => bakers_percentages, B => recipe_id, C => PFK}
-  {A => bakers_percentages, B => ingredient_id, C => PFK}
-  {A => citation_titles, B => recipe_id, C => PFK}
-  {A => citation_urls, B => recipe_id, C => PFK}
-  {A => recipe_access_date_ids, B => recipe_id, C => PFK}
-  {A => recipe_author_ids, B => recipe_id, C => PFK}
-  {A => recipe_citation_date_ids, B => recipe_id, C => PFK}
-  {A => recipe_mass_ids, B => recipe_id, C => PFK}
+  {Y => DATA_COLUMN, C => author, T => authors}
+  {Y => DATA_COLUMN, C => ratio, T => bakers_percentages}
+  {Y => DATA_COLUMN, C => access_date, T => citation_access_dates}
+  {Y => DATA_COLUMN, C => citation_date, T => citation_dates}
+  {Y => DATA_COLUMN, C => title, T => citation_titles}
+  {Y => DATA_COLUMN, C => url, T => citation_urls}
+  {Y => DATA_COLUMN, C => ingredient, T => ingredients}
+  {Y => DATA_COLUMN, C => mass, T => masses}
+  {Y => DATA_COLUMN, C => recipe, T => recipes}
+  {Y => PRIMARY_KEY, C => id, T => authors}
+  {Y => PRIMARY_KEY, C => id, T => citation_access_dates}
+  {Y => PRIMARY_KEY, C => id, T => citation_dates}
+  {Y => PRIMARY_KEY, C => id, T => ingredients}
+  {Y => PRIMARY_KEY, C => id, T => masses}
+  {Y => PRIMARY_KEY, C => id, T => recipes}
+  {Y => FOREIGN_KEY, C => access_date_id, T => recipe_access_date_ids}
+  {Y => FOREIGN_KEY, C => author_id, T => recipe_author_ids}
+  {Y => FOREIGN_KEY, C => citation_date_id, T => recipe_citation_date_ids}
+  {Y => FOREIGN_KEY, C => mass_id, T => recipe_mass_ids}
+  {Y => PRIMARY_FOREIGN_KEY, C => recipe_id, T => bakers_percentages}
+  {Y => PRIMARY_FOREIGN_KEY, C => ingredient_id, T => bakers_percentages}
+  {Y => PRIMARY_FOREIGN_KEY, C => recipe_id, T => citation_titles}
+  {Y => PRIMARY_FOREIGN_KEY, C => recipe_id, T => citation_urls}
+  {Y => PRIMARY_FOREIGN_KEY, C => recipe_id, T => recipe_access_date_ids}
+  {Y => PRIMARY_FOREIGN_KEY, C => recipe_id, T => recipe_author_ids}
+  {Y => PRIMARY_FOREIGN_KEY, C => recipe_id, T => recipe_citation_date_ids}
+  {Y => PRIMARY_FOREIGN_KEY, C => recipe_id, T => recipe_mass_ids}
+
+# table_write_rank(Type(Y), WriteRank(W), Table(T)) #
+satisfied: true
+  {Y => DATA_TABLE, W => 1, T => authors}
+  {Y => DATA_TABLE, W => 1, T => citation_access_dates}
+  {Y => DATA_TABLE, W => 1, T => citation_dates}
+  {Y => DATA_TABLE, W => 1, T => ingredients}
+  {Y => DATA_TABLE, W => 1, T => masses}
+  {Y => DATA_TABLE, W => 1, T => recipes}
+  {Y => VALUE_TABLE, W => 2, T => bakers_percentages}
+  {Y => VALUE_TABLE, W => 2, T => citation_titles}
+  {Y => VALUE_TABLE, W => 2, T => citation_urls}
+  {Y => LINK_TABLE, W => 2, T => recipe_access_date_ids}
+  {Y => LINK_TABLE, W => 2, T => recipe_author_ids}
+  {Y => LINK_TABLE, W => 2, T => recipe_citation_date_ids}
+  {Y => LINK_TABLE, W => 2, T => recipe_mass_ids}
 ```
