@@ -1,8 +1,18 @@
-# Sixth Normal Form (6NF) Recipe Ratio Database
+# Sixth Normal Form (6NF) Recipe Ratio Database: `dbml` branch
 
-Data and SQLite database setup scripts for the Observable Notebook [Baker's Percentage Calculator](https://observablehq.com/@jagrafft/bakers-percentage-calculator).
+Setup scripts for the [SQLite][sqlite] databased used by [Baker's Percentage Calculator][bpcalcobs]. This branch aims to
+
+- [x] Integrate [dbml][dbml] for generating SQL (via [dbml-cli][dbmlcli])
+  - **NOTE** dbml does not support SQLite output, so `sql/schema.sql` is manually edited after generation
+- [ ] Populate database by "decomposing" human-readable spreadsheets (e.g. `1NF -> 6NF`)
+  - [ ] Python script
 
 ## Schema
+![database schema](dbml/schema.png)
+[[pdf](dbml/schema.pdf) | [dbdiagram.io interactive visualization](https://dbdiagram.io/d/63dfc0d0296d97641d7e8c4f)]
+
+<!--
+## Schema (prior)
 | Table                      | Type    | Columns                           |
 |:---------------------------|:-------:|:----------------------------------|
 | `authors`                  | `Data`  | `id, author`                      |
@@ -46,3 +56,9 @@ Data and SQLite database setup scripts for the Observable Notebook [Baker's Perc
 | `1`   | `recipe`           | `Text, No Null`                     | Name of recipe                                                       |
 | `1`   | `title`            | `Text, No Null`                     | Title of recipe, sometimes diverges from `recipe`                    |
 | `1`   | `url`              | `Text, No Null`                     | URL citation may be accessed at                                      |
+//-->
+
+[bpcalcobs]: https://observablehq.com/@jagrafft/bakers-percentage-calculator
+[dbml]: https://www.dbml.org/
+[dbmlcli]: https://www.dbml.org/cli/
+[sqlite]: https://www.sqlite.org/

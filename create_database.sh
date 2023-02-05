@@ -8,10 +8,7 @@ fi
 DATABASE="${1}.db"
 
 # Create Tables #
-for sql in `ls tables/*.sql`
-do
-	sqlite3 ${DATABASE} < ${sql}
-done
+sqlite3 ${DATABASE} < "sql/schema.sql"
 
 # Populate Tables #
 # Tables with no dependencies
