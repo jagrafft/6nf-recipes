@@ -5,8 +5,10 @@ Setup scripts for the [SQLite][sqlite] databased used by [Baker's Percentage Cal
 - [x] Integrate [dbml][dbml] for generating SQL (via [dbml-cli][dbmlcli])
   - **NOTE** dbml does not support SQLite output, so `sql/schema.sql` is manually edited after generation
 - [ ] Populate database by "decomposing" human-readable spreadsheets (e.g. `1NF -> 6NF`)
-  - [ ] Refactor dataset
-  - [ ] Python script
+  - [x] Refactor dataset
+  - [ ] Write Python script to
+    - [ ] Restructure data
+    - [ ] Write to SQLite database
 
 ## Schema
 ![database schema](dbml/schema.png)
