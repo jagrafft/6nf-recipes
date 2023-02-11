@@ -1,5 +1,7 @@
 *~
 \#*
+
+*.bak
 *.db
 
 .DS_Store

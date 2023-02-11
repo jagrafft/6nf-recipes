@@ -7,12 +7,21 @@ Setup scripts for the [SQLite][sqlite] databased used by [Baker's Percentage Cal
 - [ ] Populate database by "decomposing" human-readable spreadsheets (e.g. `1NF -> 6NF`)
   - [x] Refactor dataset
   - [ ] Write Python script to
-    - [ ] Restructure data
-    - [ ] Write to SQLite database
+    - [x] Load CSV data
+    - [ ] Restructure CSV data
+    - [x] Create SQLite database
+    - [ ] Populate SQLite database with
+      - [ ] Data
+      - [x] Schema
+      - [ ] View(s)
+    - [ ] Validate data written to database
 
 ## Schema
+<!--
 ![database schema](dbml/schema.png)
-[[pdf](dbml/schema.pdf) | [dbdiagram.io interactive visualization](https://dbdiagram.io/d/63dfc0d0296d97641d7e8c4f)]
+[[pdf](dbml/schema.pdf) | ]
+//-->
+[dbdiagram.io interactive visualization](https://dbdiagram.io/d/63dfc0d0296d97641d7e8c4f)
 
 <!--
 ## Schema (prior)

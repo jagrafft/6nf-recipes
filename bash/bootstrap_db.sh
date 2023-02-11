@@ -5,7 +5,7 @@ then
 	exit
 fi
 
-DATABASE="${1}.db"
+DATABASE="${1}"
 
 # Create Tables #
 sqlite3 ${DATABASE} < "sql/schema.sql"
