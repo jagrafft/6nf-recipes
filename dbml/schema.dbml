@@ -1,6 +1,6 @@
 // Project
 Project observable_bakers_percentages {
-  database_type: "Postgres"
+  database_type: "SQLite"
   Note: "Schema for database used by https://observablehq.com/@jagrafft/bakers-percentage-calculator"
 }
 
@@ -8,41 +8,58 @@ Project observable_bakers_percentages {
 Table data_authors [headercolor: #946fc7] {
   id INT [pk]
   author TEXT [not null, unique]
+  Note: "Full name of an author, as it appears in the citation."
 }
 
 Table data_dates [headercolor: #946fc7] {
   id INT [pk]
-  dte DATE [not null, unique]
+  dte TEXT [not null, unique]
+  Note: "Access and publication dates for citations. Stored as text to avoid issues with nonstandard formatting."
 }
 
 Table data_ingredients [headercolor: #946fc7] {
   id INT [pk]
   ingredient TEXT [not null, unique]
+  Note: "Unique names of ingredients."
 }
 
 Table data_default_masses [headercolor: #946fc7] {
   id INT [pk]
   grams REAL [not null, unique]
+  Note: "Default masses for individual recipes."
 }
 
 Table data_ratios [headercolor: #946fc7] {
   id INT [pk]
   ratio REAL [not null, unique]
+  Note: "Number between `[0.0,1.0]` indicating the [Baker's Percentage](https://www.kingarthurbaking.com/pro/reference/bakers-percentage)."
 }
 
 Table data_titles [headercolor: #946fc7] {
   id INT [pk]
   title TEXT [not null, unique]
+  Note: "Recipe and citation titles."
 }
 
-TableGroup datum {
+Table data_urls [headercolor: #946fc7] {
+  id INT [pk]
+  url TEXT [not null, unique]
+  Note: '''
+  URL for citation.
+  
+  *Note*
+  - URLs are used as globally unique identifiers
+  '''
+}
+
+TableGroup Data {
   data_authors
   data_dates
   data_default_masses
   data_ingredients
   data_ratios
   data_titles
-  recipe_urls
+  data_urls
 }
 
 Table recipe_access_dates [headercolor: #7aa444] {
@@ -52,8 +69,10 @@ Table recipe_access_dates [headercolor: #7aa444] {
   indexes {
     (url_id, date_id) [unique]
   }
+  
+  Note: ""
 }
-Ref: recipe_access_dates.url_id - recipe_urls.id
+Ref: recipe_access_dates.url_id - data_urls.id
 Ref: recipe_access_dates.date_id - data_dates.id
 
 Table recipe_authors [headercolor: #7aa444] {
@@ -63,20 +82,24 @@ Table recipe_authors [headercolor: #7aa444] {
   indexes {
     (url_id, author_id) [unique]
   }
+  
+  Note: ""
 }
-Ref: recipe_authors.url_id > recipe_urls.id
+Ref: recipe_authors.url_id > data_urls.id
 Ref: recipe_authors.author_id > data_authors.id
 
-Table recipe_citation_title [headercolor: #7aa444] {
+Table recipe_citation_titles [headercolor: #7aa444] {
   url_id INT [pk]
   title_id INT [not null]
   
   indexes {
     (url_id, title_id) [unique]
   }
+  
+  Note: ""
 }
-Ref: recipe_citation_title.url_id - recipe_urls.id
-Ref: recipe_citation_title.title_id - data_titles.id
+Ref: recipe_citation_titles.url_id - data_urls.id
+Ref: recipe_citation_titles.title_id - data_titles.id
 
 Table recipe_dates [headercolor: #7aa444] {
   url_id INT [pk]
@@ -85,8 +108,10 @@ Table recipe_dates [headercolor: #7aa444] {
   indexes {
     (url_id, date_id) [unique]
   }
+  
+  Note: ""
 }
-Ref: recipe_dates.url_id - recipe_urls.id
+Ref: recipe_dates.url_id - data_urls.id
 Ref: recipe_dates.date_id - data_dates.id
 
 Table recipe_default_masses [headercolor: #7aa444] {
@@ -96,8 +121,10 @@ Table recipe_default_masses [headercolor: #7aa444] {
   indexes {
     (url_id, grams_id) [unique]
   }
+  
+  Note: ""
 }
-Ref: recipe_default_masses.url_id - recipe_urls.id
+Ref: recipe_default_masses.url_id - data_urls.id
 Ref: recipe_default_masses.grams_id - data_default_masses.id
 
 Table recipe_ingredients [headercolor: #7aa444] {
@@ -107,8 +134,10 @@ Table recipe_ingredients [headercolor: #7aa444] {
   indexes {
     (url_id, ingredients_id) [unique]
   }
+  
+  Note: ""
 }
-Ref: recipe_ingredients.url_id > recipe_urls.id
+Ref: recipe_ingredients.url_id > data_urls.id
 Ref: recipe_ingredients.ingredients_id > data_ingredients.id
 
 Table recipe_ratios [headercolor: #7aa444] {
@@ -119,8 +148,10 @@ Table recipe_ratios [headercolor: #7aa444] {
   indexes {
     (url_id, ingredients_id, ratio_id) [unique]
   }
+  
+  Note: ""
 }
-Ref: recipe_ratios.url_id > recipe_urls.id
+Ref: recipe_ratios.url_id > data_urls.id
 Ref: recipe_ratios.ratio_id > data_ratios.id
 Ref: recipe_ratios.ingredients_id > data_ingredients.id
 
@@ -131,20 +162,16 @@ Table recipe_titles [headercolor: #7aa444] {
   indexes {
     (url_id, title_id) [unique]
   }
+  
+  Note: ""
 }
-Ref: recipe_titles.url_id - recipe_urls.id
+Ref: recipe_titles.url_id - data_urls.id
 Ref: recipe_titles.title_id - data_titles.id
 
-Table recipe_urls [headercolor: #7aa444] {
-  id INT [pk]
-  url TEXT [not null, unique]
-  Note: "URLs are used as globally unique identifiers for recipes"
-}
-
-TableGroup recipes {
+TableGroup Recipe {
   recipe_access_dates
   recipe_authors
-  recipe_citation_title
+  recipe_citation_titles
   recipe_dates
   recipe_default_masses
   recipe_ingredients
