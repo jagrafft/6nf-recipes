@@ -5,7 +5,7 @@ recipe_id,ingredient,bakers_percentage
 1,sugar,0.02381
 1,yeast,0.01587
 1,salt,0.01587
-2,'00' flour,1.00000
+2,"'00' flour",1.00000
 2,water,0.65000
 2,kosher salt,0.02000
 2,yeast,0.015000

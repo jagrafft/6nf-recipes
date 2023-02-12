@@ -88,6 +88,21 @@ Table recipe_authors [headercolor: #7aa444] {
 Ref: recipe_authors.url_id > data_urls.id
 Ref: recipe_authors.author_id > data_authors.id
 
+Table recipe_bakers_percentage [headercolor: #7aa444] {
+  url_id INT [pk]
+  ingredients_id INT [pk]
+  ratio_id INT [not null]
+  
+  indexes {
+    (url_id, ingredients_id, ratio_id) [unique]
+  }
+  
+  Note: ""
+}
+Ref: recipe_bakers_percentage.url_id > data_urls.id
+Ref: recipe_bakers_percentage.ratio_id > data_ratios.id
+Ref: recipe_bakers_percentage.ingredients_id > data_ingredients.id
+
 Table recipe_citation_titles [headercolor: #7aa444] {
   url_id INT [pk]
   title_id INT [not null]
@@ -127,34 +142,6 @@ Table recipe_default_masses [headercolor: #7aa444] {
 Ref: recipe_default_masses.url_id - data_urls.id
 Ref: recipe_default_masses.grams_id - data_default_masses.id
 
-Table recipe_ingredients [headercolor: #7aa444] {
-  url_id INT [pk]
-  ingredients_id INT [not null]
-  
-  indexes {
-    (url_id, ingredients_id) [unique]
-  }
-  
-  Note: ""
-}
-Ref: recipe_ingredients.url_id > data_urls.id
-Ref: recipe_ingredients.ingredients_id > data_ingredients.id
-
-Table recipe_ratios [headercolor: #7aa444] {
-  url_id INT [pk]
-  ingredients_id INT [not null]
-  ratio_id INT [not null]
-  
-  indexes {
-    (url_id, ingredients_id, ratio_id) [unique]
-  }
-  
-  Note: ""
-}
-Ref: recipe_ratios.url_id > data_urls.id
-Ref: recipe_ratios.ratio_id > data_ratios.id
-Ref: recipe_ratios.ingredients_id > data_ingredients.id
-
 Table recipe_titles [headercolor: #7aa444] {
   url_id INT [pk]
   title_id INT [not null]
@@ -171,10 +158,9 @@ Ref: recipe_titles.title_id - data_titles.id
 TableGroup Recipe {
   recipe_access_dates
   recipe_authors
+  recipe_bakers_percentage
   recipe_citation_titles
   recipe_dates
   recipe_default_masses
-  recipe_ingredients
-  recipe_ratios
   recipe_titles
 }

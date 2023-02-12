@@ -1,7 +1,7 @@
 recipe_id,title,citation_title,author,date,access_date,default_mass,url
-1,Basic New York-Style Pizza Dough,Basic New York-Style Pizza Dough Recipe,J. Kenji López-Alt,03 Apr 2020,2021-03-02,630.0,https://www.seriouseats.com/recipes/2012/07/basic-new-york-style-pizza-dough.html
-2,Basic Neapolitan Pizza Dough,Basic Neapolitan Pizza Dough Recipe,J. Kenji López-Alt,25 Jun 2020,2022-09-27,567.0,https://www.seriouseats.com/basic-neapolitan-pizza-dough-recipe
-3,Basic Square Pan Pizza Dough (Scicilian-Style),Basic Square Pan Pizza Dough Recipe (Sicilian-Style Dough),J. Kenji López-Alt,08 Apr 2020,2022-09-27,500.0,https://www.seriouseats.com/basic-square-pan-pizza-dough-recipe-sicilian-recipe
-4,European Peasant Bread,One Dough Three Ways: Versatile baking with Zoë François and Jeff Hertzberg,Rachel Hertzberg,30 Aug 2017,2020-09-25,1000.0,https://www.growlermag.com/one-bread-dough-three-ways/
-5,Tartine's Country Bread,Tartine Bakery's Country Bread,Chad Robertson,Jan 2011,2022-09-27,1000.0,https://www.marthastewart.com/1130184/tartine-country-bread
-6,Foolproof Pan Pizza,Foolproof Pan Pizza Recipe,J. Kenji López-Alt,26 Apr 2020,2022-10-05,400.0,https://www.seriouseats.com/foolproof-pan-pizza-recipe
+1,Basic New York-Style Pizza Dough,Basic New York-Style Pizza Dough Recipe,"J. Kenji López-Alt",03 Apr 2020,2021-03-02,630.0,"https://www.seriouseats.com/basic-new-york-style-pizza-dough"
+2,Basic Neapolitan Pizza Dough,Basic Neapolitan Pizza Dough Recipe,"J. Kenji López-Alt",25 Jun 2020,2022-09-27,567.0,"https://www.seriouseats.com/basic-neapolitan-pizza-dough-recipe"
+3,Basic Square Pan Pizza Dough (Scicilian-Style),Basic Square Pan Pizza Dough Recipe (Sicilian-Style Dough),"J. Kenji López-Alt",08 Apr 2020,2022-09-27,500.0,"https://www.seriouseats.com/basic-square-pan-pizza-dough-recipe-sicilian-recipe"
+4,European Peasant Bread,One Dough Three Ways: Versatile baking with Zoë François and Jeff Hertzberg,Rachel Hertzberg,30 Aug 2017,2020-09-25,1000.0,"https://www.growlermag.com/one-bread-dough-three-ways"
+5,Tartine's Country Bread,Tartine Bakery's Country Bread,Chad Robertson,Jan 2011,2022-09-27,1000.0,"https://www.marthastewart.com/1130184/tartine-country-bread"
+6,Foolproof Pan Pizza,Foolproof Pan Pizza Recipe,"J. Kenji López-Alt",26 Apr 2020,2022-10-05,400.0,"https://www.seriouseats.com/foolproof-pan-pizza-recipe"

@@ -1,9 +1,11 @@
 # Sixth Normal Form (6NF) Recipe Ratio Database: `dbml` branch
 
-Setup scripts for the [SQLite][sqlite] databased used by [Baker's Percentage Calculator][bpcalcobs]. This branch aims to
+Bootstrap scripts for the [SQLite][sqlite] databased used by [Baker's Percentage Calculator][bpcalcobs]. Add recipes by editing the CSVs in `data/`. Python script "deconstructs" input data into sets of unique values then writes the denormalized data to a SQL database.
 
+## Punch List
 - [x] Integrate [dbml][dbml] for generating SQL (via [dbml-cli][dbmlcli])
   - **NOTE** dbml does not support SQLite output, so `sql/schema.sql` is manually edited after generation
+- [ ] Refactor DBML
 - [ ] Populate database by "decomposing" human-readable spreadsheets (e.g. `1NF -> 6NF`)
   - [x] Refactor dataset
   - [ ] Write Python script to
@@ -13,7 +15,7 @@ Setup scripts for the [SQLite][sqlite] databased used by [Baker's Percentage Cal
     - [ ] Populate SQLite database with
       - [x] Schema
       - [x] Data
-      - [ ] Relations
+      - [x] Relations
       - [ ] View(s)
     - [ ] Validate data written to database
 

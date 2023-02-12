@@ -49,6 +49,13 @@ CREATE TABLE `recipe_authors` (
   `author_id` INTEGER NOT NULL REFERENCES `data_authors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE `recipe_bakers_percentages` (
+  `url_id` INTEGER REFERENCES `data_urls` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  `ingredients_id` INTEGER NOT NULL REFERENCES `data_ingredients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  `ratio_id` INTEGER NOT NULL REFERENCES `data_ratios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY (`url_id`, `ingredients_id`)
+);
+
 CREATE TABLE `recipe_citation_titles` (
   `url_id` INTEGER PRIMARY KEY REFERENCES `data_urls` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   `title_id` INTEGER NOT NULL REFERENCES `data_titles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -62,17 +69,6 @@ CREATE TABLE `recipe_dates` (
 CREATE TABLE `recipe_default_masses` (
   `url_id` INTEGER PRIMARY KEY REFERENCES `data_urls` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   `grams_id` INTEGER NOT NULL REFERENCES `data_default_masses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE `recipe_ingredients` (
-  `url_id` INTEGER PRIMARY KEY REFERENCES `data_urls` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  `ingredients_id` INTEGER NOT NULL REFERENCES `data_ingredients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE `recipe_ratios` (
-  `url_id` INTEGER PRIMARY KEY REFERENCES `data_urls` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  `ingredients_id` INTEGER NOT NULL REFERENCES `data_ingredients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  `ratio_id` INTEGER NOT NULL REFERENCES `data_ratios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE `recipe_titles` (
@@ -90,8 +86,6 @@ CREATE UNIQUE INDEX "recipe_dates_0" ON "recipe_dates" ("url_id", "date_id");
 
 CREATE UNIQUE INDEX "recipe_default_masses_0" ON "recipe_default_masses" ("url_id", "grams_id");
 
-CREATE UNIQUE INDEX "recipe_ingredients_0" ON "recipe_ingredients" ("url_id", "ingredients_id");
-
-CREATE UNIQUE INDEX "recipe_ratios_0" ON "recipe_ratios" ("url_id", "ingredients_id", "ratio_id");
+CREATE UNIQUE INDEX "recipe_bakers_percentages_0" ON "recipe_bakers_percentages" ("url_id", "ingredients_id", "ratio_id");
 
 CREATE UNIQUE INDEX "recipe_titles_0" ON "recipe_titles" ("url_id", "title_id");

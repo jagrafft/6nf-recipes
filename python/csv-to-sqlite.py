@@ -7,11 +7,8 @@ from subprocess import call
 
 project_root = Path(__file__).parent.parent
 
-### Schema for Populating Database ###
-# Data <- (CSV Column, SQLite Column)
-# Script will generate keys
-# NB. Since all tables use `url_id` as a primary key it is not listed
-data_column_map = {
+### Mapping from CSV columns to SQL tables ###
+data_map = {
     "title": "data_titles",
     "citation_title": "data_titles",
     "author": "data_authors",
@@ -23,7 +20,16 @@ data_column_map = {
     "bakers_percentage": "data_ratios",
 }
 
-# "link"
+relation_map = {
+    "title": "recipe_titles",
+    "citation_title": "recipe_citation_titles",
+    "author": "recipe_authors",
+    "date": "recipe_dates",
+    "access_date": "recipe_access_dates",
+    "default_mass": "recipe_default_masses",
+    "ingredient": "recipe_ingredients",
+    "bakers_percentage": "recipe_bakers_percentages",
+}
 ###
 
 ### Create SQLite Database ###
@@ -37,7 +43,7 @@ if Path.exists(db_path):
 # due to the renaming instructions above
 connection = sqlite3.connect(db_path)
 
-# Bootstrap database schema
+# Add schema and views to database
 call(["sh", "bash/bootstrap_db.sh", db_name])
 ###
 
@@ -51,36 +57,75 @@ indexed_tuples = {}
 # Push values from CSV columns into an array
 for df in [ingredients, recipes]:
     for col in df.drop("recipe_id", axis=1):
-        if data_column_map[col] in indexed_tuples:
-            indexed_tuples[data_column_map[col]].extend(df[col].unique())
+        if data_map[col] in indexed_tuples:
+            indexed_tuples[data_map[col]].extend(df[col].unique())
         else:
-            indexed_tuples[data_column_map[col]] = [*df[col].unique()]
+            indexed_tuples[data_map[col]] = [*df[col].unique()]
 
 # Transform arrays into enumerated sets of unique values
 for (k, v) in indexed_tuples.items():
     indexed_tuples[k] = [(i + 1, v) for (i, v) in enumerate(set(v))]
+###
 
-# Map data values to keys to use for creating relation tables
+### Create relationsships between data entites ###
+relation_tuples = {}
+
+# Map data values to keys (used for populating relational tables)
 data_value_map = {}
-
 for (tbl, vals) in indexed_tuples.items():
     data_value_map[tbl] = {k: v for (v, k) in vals}
+
+# Populate recipe data relations
+for row in recipes.drop("recipe_id", axis=1).itertuples(index=False):
+    url_id = data_value_map["data_urls"][row.url]
+
+    row_dict = row._asdict()
+    del row_dict["url"]
+
+    for (k, v) in row_dict.items():
+        relation = relation_map[k]
+        if relation in relation_tuples:
+            relation_tuples[relation].append((url_id, data_value_map[data_map[k]][v]))
+        else:
+            relation_tuples[relation] = [(url_id, data_value_map[data_map[k]][v])]
+
+# Ingredients data
+# NB. Handled separately due to 2-airty key/3-airty tuple
+
+# Map URL strings to recipe_ids
+recipe_id_map = {}
+
+for row in recipes[["url", "recipe_id"]].itertuples(index=False):
+    recipe_id_map[row.recipe_id] = data_value_map["data_urls"][row.url]
+
+# Create relation from maps
+bp_relation_tuples = []
+
+for (i, row) in enumerate(ingredients.itertuples(index=False)):
+    bp_relation_tuples.append(
+        (
+            recipe_id_map[row.recipe_id],
+            data_value_map["data_ingredients"][row.ingredient],
+            data_value_map["data_ratios"][row.bakers_percentage],
+        )
+    )
 ###
 
 ### Populate SQLite database ###
 cursor = connection.cursor()
 
 # Data Tables
-for (tbl, vals) in indexed_tuples.items():
-    cursor.executemany(f"INSERT INTO {tbl} VALUES (?,?)", vals)
-    connection.commit()
+for dataset in [indexed_tuples, relation_tuples]:
+    for (tbl, vals) in dataset.items():
+        cursor.executemany(f"INSERT INTO {tbl} VALUES (?,?)", vals)
+        connection.commit()
 
-# Relation Tables
-
-print(data_value_map)
+# Handled separately due to 2-airty key/3-airty tuple
+cursor.executemany(
+    f"INSERT INTO recipe_bakers_percentages VALUES (?,?,?)", bp_relation_tuples
+)
+connection.commit()
 ###
-
-# install views (and such)...
 
 # validate (TODO design)
 ### Validate Database Tables ###
