@@ -5,7 +5,6 @@ Bootstrap scripts for the [SQLite][sqlite] databased used by [Baker's Percentage
 ## Punch List
 - [x] Integrate [dbml][dbml] for generating SQL (via [dbml-cli][dbmlcli])
   - **NOTE** dbml does not support SQLite output, so `sql/schema.sql` is manually edited after generation
-  - [x] Refactor DBML
 - [ ] Populate database by "decomposing" human-readable spreadsheets (e.g. `1NF -> 6NF`)
   - [x] Refactor dataset
   - [ ] Write Python script to
