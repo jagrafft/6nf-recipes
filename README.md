@@ -12,11 +12,15 @@ Bootstrap scripts for the [SQLite][sqlite] databased used by [Baker's Percentage
     - [x] Load CSV data
     - [x] Restructure CSV data
     - [x] Create SQLite database
-    - [ ] Populate SQLite database with
-      - [x] Schema
+    - [x] Populate SQLite database with
       - [x] Data
+      - [x] Schema
       - [x] Relations
-      - [ ] View(s)
+      - [x] Views
+        - [x] Ingredients list
+        - [x] Recipe citations
+        - [x] Recipe default mass
+        - [x] Recipe list
     - [ ] Validate data written to database
 
 ## Schema

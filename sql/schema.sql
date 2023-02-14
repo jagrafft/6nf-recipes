@@ -57,9 +57,9 @@ CREATE TABLE `recipe_authors` (
 
 CREATE TABLE `recipe_bakers_percentages` (
   `url_id` INTEGER REFERENCES `data_urls` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  `ingredients_id` INTEGER NOT NULL REFERENCES `data_ingredients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  `ingredient_id` INTEGER NOT NULL REFERENCES `data_ingredients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   `ratio_id` INTEGER NOT NULL REFERENCES `data_ratios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  PRIMARY KEY (`url_id`, `ingredients_id`)
+  PRIMARY KEY (`url_id`, `ingredient_id`)
 );
 
 CREATE TABLE `recipe_citation_titles` (
@@ -92,6 +92,6 @@ CREATE UNIQUE INDEX "recipe_dates_0" ON "recipe_dates" ("url_id", "date_id");
 
 CREATE UNIQUE INDEX "recipe_default_masses_0" ON "recipe_default_masses" ("url_id", "grams_id");
 
-CREATE UNIQUE INDEX "recipe_bakers_percentages_0" ON "recipe_bakers_percentages" ("url_id", "ingredients_id", "ratio_id");
+CREATE UNIQUE INDEX "recipe_bakers_percentages_0" ON "recipe_bakers_percentages" ("url_id", "ingredient_id", "ratio_id");
 
 CREATE UNIQUE INDEX "recipe_titles_0" ON "recipe_titles" ("url_id", "title_id");

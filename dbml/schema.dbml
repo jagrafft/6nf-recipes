@@ -100,18 +100,18 @@ Ref: recipe_authors.author_id > data_authors.id [delete: cascade, update: cascad
 
 Table recipe_bakers_percentages [headercolor: #7aa444] {
   url_id INT [pk]
-  ingredients_id INT [not null]
+  ingredient_id INT [not null]
   ratio_id INT [not null]
   
   indexes {
-    (url_id, ingredients_id, ratio_id) [unique]
+    (url_id, ingredient_id, ratio_id) [unique]
   }
   
   Note: "Key pairings for a recipe's list of ingredients."
 }
 Ref: recipe_bakers_percentages.url_id > data_urls.id [delete: cascade, update: cascade]
 Ref: recipe_bakers_percentages.ratio_id > data_ratios.id [delete: cascade, update: cascade]
-Ref: recipe_bakers_percentages.ingredients_id > data_ingredients.id [delete: cascade, update: cascade]
+Ref: recipe_bakers_percentages.ingredient_id > data_ingredients.id [delete: cascade, update: cascade]
 
 Table recipe_citation_titles [headercolor: #7aa444] {
   url_id INT [pk]

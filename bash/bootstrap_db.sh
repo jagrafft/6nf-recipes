@@ -7,8 +7,11 @@ fi
 
 DATABASE="${1}"
 
-# Create Tables #
+# Populate Tables
 sqlite3 ${DATABASE} < "sql/schema.sql"
 
-# Create Views
-# sqlite3 ${DATABASE} < sql/views/...
+# Populate Views
+for sql in `/bin/ls -1 sql/views/*.sql`
+do
+    sqlite3 ${DATABASE} < ${sql}
+done
