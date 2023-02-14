@@ -1,8 +1,12 @@
--- SQL dump generated using DBML (dbml-lang.org)
--- Database: MySQL
--- Generated at: 2023-02-12T07:17:07.017Z
--- NB. - DBML does not support SQLite, so foreign key references and other details are modified by hand
+-- SQL generated using DBML (dbml-lang.org)
+-- Database: SQLite
+--
+-- *Notes*
+--     - DBML does not support SQLite
+--     - Foreign key references and other constraints are added/modified by hand
 --     - Best to avoid `AUTOINCREMENT` when necessary (https://www.sqlite.org/autoinc.html), so keys will be assigned by Python script
+-- 
+-- Last update: 2023-02-14
 
 CREATE TABLE `data_authors` (
   `id` INTEGER PRIMARY KEY,
@@ -11,7 +15,7 @@ CREATE TABLE `data_authors` (
 
 CREATE TABLE `data_dates` (
   `id` INTEGER PRIMARY KEY,
-  `dte` TEXT UNIQUE NOT NULL
+  `dt` TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE `data_ingredients` (
@@ -21,12 +25,14 @@ CREATE TABLE `data_ingredients` (
 
 CREATE TABLE `data_default_masses` (
   `id` INTEGER PRIMARY KEY,
-  `grams` REAL UNIQUE NOT NULL
+  `grams` DECIMAL(11,3) UNIQUE NOT NULL
+  CONSTRAINT data_default_masses_gram_range CHECK(grams > 0.0)
 );
 
 CREATE TABLE `data_ratios` (
   `id` INTEGER PRIMARY KEY,
-  `ratio` REAL UNIQUE NOT NULL
+  `ratio` DECMIAL(5,4) UNIQUE NOT NULL
+  CONSTRAINT data_ratios_ratio_range CHECK(ratio > 0.0 AND ratio <= 1.0)
 );
 
 CREATE TABLE `data_titles` (
