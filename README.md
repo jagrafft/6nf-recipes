@@ -1,19 +1,33 @@
-# Baker's Percentage Calculator Database Bootstrap Tool Bootstrap scripts for the [SQLite][sqlite] databased used by [Baker's Percentage Calculator][bpcalcobs]. Add recipes by editing the CSVs in `data/` then run `python/csv-to-sqlite.py` to transform them into a ready-to-deploy 6th Normal Form SQL database. ## Using - Install [Poetry][pypoetry] - https://python-poetry.org/docs/#installation - Clone repository - `cd 6nf-recipes` - `poetry install` - `poetry run python3 python/csv-to-sqlite.py` - Outputs `[YYYY-mm-dd]_bp_recipes.db` ## Feature List - [x] [dbml][dbml] for generating SQL (via [dbml-cli][dbmlcli])
-  - **NOTE** dbml does not support SQLite output, so `sql/schema.sql` is manually edited after generation - [x] Populate database by "decomposing" human-readable spreadsheets - [x] Refactor dataset
-  - [x] Write Python script to
-    - [x] Load CSV data
-    - [x] Restructure CSV data
-    - [x] Create SQLite database
-    - [x] Populate SQLite database with
-      - [x] Data
-      - [x] Schema
-      - [x] Relations
-      - [x] Views
-        - [x] Ingredients list
-        - [x] Recipe citations
-        - [x] Recipe default mass
-        - [x] Recipe list
-    - [x] Validate data written to database
+# Baker's Percentage Calculator Database Bootstrap Tool
+
+Bootstrap scripts for the [SQLite][sqlite] databased used by [Baker's Percentage Calculator][bpcalcobs]. Add recipes by editing the CSVs in `data/` then run `python/csv-to-sqlite.py` to transform them into a ready-to-deploy 6th Normal Form SQL database.
+
+## Using
+1. Install [Poetry][pypoetry]
+1. https://python-poetry.org/docs/#installation
+1. Clone repository
+1. `cd 6nf-recipes`
+1. `poetry install`
+1. `poetry run python3 python/csv-to-sqlite.py`
+1. Outputs `[YYYY-mm-dd]_bp_recipes.db`
+
+## Feature List
+- [x] [dbml][dbml] for generating SQL (via [dbml-cli][dbmlcli])
+  - **NOTE** dbml does not support SQLite output, so `sql/schema.sql` is manually edited after generation
+- [x] Python script to populate database by "decomposing" human-readable spreadsheets
+  - [x] Load CSV data
+  - [x] Restructure CSV data
+  - [x] Create SQLite database
+  - [x] Populate SQLite database with
+    - [x] Data
+    - [x] Schema
+    - [x] Relations
+    - [x] Views
+      - [x] Ingredients list
+      - [x] Recipe citations
+      - [x] Recipe default mass
+      - [x] Recipe list
+  - [x] Validate data written to database
 
 ## Schema
 ![database schema](dbml/schema.png)
