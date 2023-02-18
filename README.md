@@ -1,48 +1,64 @@
-# Sixth Normal Form (6NF) Recipe Ratio Database
+# Sixth Normal Form (6NF) Recipe Ratio Database: Model
 
-Data and SQLite database setup scripts for the Observable Notebook [Baker's Percentage Calculator](https://observablehq.com/@jagrafft/bakers-percentage-calculator).
+[Julog](https://github.com/ztangent/Julog.jl) model of column and table relationships used to cross-validate the database's [schema](https://github.com/jagrafft/6nf-recipes#schema).
 
-## Schema
-| Table                      | Type    | Columns                           |
-|:---------------------------|:-------:|:----------------------------------|
-| `authors`                  | `Data`  | `id, author`                      |
-| `citation_access_dates`    | `Data`  | `id, access_date`                 |
-| `citation_dates`           | `Data`  | `id, citation_date`               |
-| `ingredients`              | `Data`  | `id, ingredient`                  |
-| `masses`                   | `Data`  | `id, mass`                        |
-| `recipes`                  | `Data`  | `id, recipe`                      |
-| `recipe_access_date_ids`   | `Link`  | `recipe_id, access_date_id`       |
-| `recipe_author_ids`        | `Link`  | `recipe_id, author_id`            |
-| `recipe_citation_date_ids` | `Link`  | `recipe_id, citation_date_id`     |
-| `recipe_mass_ids`          | `Link`  | `recipe_id, mass_id`              |
-| `bakers_percentages`       | `Value` | `recipe_id, ingredient_id, ratio` |
-| `citation_titles`          | `Value` | `recipe_id, title`                |
-| `citation_urls`            | `Value` | `recipe_id, url`                  |
+### Execution
+1. If necessary, install [Julia](https://julialang.org/)
+1. `cd path/to/6nf-recipes`
+1. `julia -e 'using Pkg; Pkg.add("Julog")'`
+1. `julia model/run_julog_model.jl`
 
-### Summaries
-| Count | Table Type | Description                                                                  |
-|:-----:|:----------:|:-----------------------------------------------------------------------------|
-| `6`   | `Data`     | No columns reference other tables                                            |
-| `4`   | `Link`     | All columns reference other tables                                           |
-| `3`   | `Value`    | Primary Key<sup>\*</sup> is a reference, right-most column holds data values |
+#### Example Output
+```julia
+# data_key(K) #
+satisfied: true
+  {K => author}
+  {K => ratio}
+  {K => access_date}
+  {K => citation_date}
+  {K => title}
+  {K => url}
+  {K => ingredient}
+  {K => mass}
+  {K => recipe}
 
-<span style="font-size: 10pt;"><sup>\*</sup> - Keys may be of airty `>= 1`.</span>
+# foreign_key(K) #
+satisfied: true
+  {K => recipe_id}
+  {K => ingredient_id}
+  {K => access_date_id}
+  {K => author_id}
+  {K => citation_date_id}
+  {K => mass_id}
 
-| Count | Entity             | Entity Type                         | Description                                                          |
-|:-----:|:-------------------|:------------------------------------|:---------------------------------------------------------------------|
-| `7`   | `recipe_id`        | `Primary Key, Integer, Foreign Key` | Key of `recipe_list`                                                 |
-| `6`   | `id`               | `Primary Key, Integer`              | Integer identifier for data value, referenced by other tables        |
-| `1`   | `access_date`      | `Text, No Null`                     | Date citation was accessed (`YYYY-MM-DD`)                            |
-| `1`   | `access_date_id`   | `Integer, No Null, Foreign Key`     | Key of `recipe_citation_accessed_dates`                              |
-| `1`   | `author`           | `Text, No Null`                     | Full name of author, e.g. "Suzie Quantum, Esq."                      |
-| `1`   | `author_id`        | `Integer, Foreign Key`              | Key of `recipe_citation_authors`                                     |
-| `1`   | `citation_date`    | `Text, No Null`                     | Date of citation (`[DD] Mon YYYY`)                                   |
-| `1`   | `citation_date_id` | `Integer, Foreign Key`              | Key of `recipe_citation_date_values`                                 |
-| `1`   | `ingredient`       | `Text, No Null`                     | Name of ingredient                                                   |
-| `1`   | `ingredient_id`    | `Integer, Foreign Key`              | Key of `ingredient_list`                                             |
-| `1`   | `mass`             | `Real, No Null`                     | Default mass for a recipe, in grams (g)                              |
-| `1`   | `mass_id`          | `Integer, Foreign Key`              | Key of `default_masses`                                              |
-| `1`   | `ratio`            | `Real, No Null`                     | Proportion of total flour an ingredient represents in a given recipe |
-| `1`   | `recipe`           | `Text, No Null`                     | Name of recipe                                                       |
-| `1`   | `title`            | `Text, No Null`                     | Title of recipe, sometimes diverges from `recipe`                    |
-| `1`   | `url`              | `Text, No Null`                     | URL citation may be accessed at                                      |
+# col(Column(A), Key(B), Type(C)) #
+PK => Primary Key, FK => Foreign Key, PFK => Primary Foreign Key, DA => Data Column
+satisfied: true
+  {A => authors, B => author, C => DA}
+  {A => bakers_percentages, B => ratio, C => DA}
+  {A => citation_access_dates, B => access_date, C => DA}
+  {A => citation_dates, B => citation_date, C => DA}
+  {A => citation_titles, B => title, C => DA}
+  {A => citation_urls, B => url, C => DA}
+  {A => ingredients, B => ingredient, C => DA}
+  {A => masses, B => mass, C => DA}
+  {A => recipes, B => recipe, C => DA}
+  {A => authors, B => id, C => PK}
+  {A => citation_access_dates, B => id, C => PK}
+  {A => citation_dates, B => id, C => PK}
+  {A => ingredients, B => id, C => PK}
+  {A => masses, B => id, C => PK}
+  {A => recipes, B => id, C => PK}
+  {A => recipe_access_date_ids, B => access_date_id, C => FK}
+  {A => recipe_author_ids, B => author_id, C => FK}
+  {A => recipe_citation_date_ids, B => citation_date_id, C => FK}
+  {A => recipe_mass_ids, B => mass_id, C => FK}
+  {A => bakers_percentages, B => recipe_id, C => PFK}
+  {A => bakers_percentages, B => ingredient_id, C => PFK}
+  {A => citation_titles, B => recipe_id, C => PFK}
+  {A => citation_urls, B => recipe_id, C => PFK}
+  {A => recipe_access_date_ids, B => recipe_id, C => PFK}
+  {A => recipe_author_ids, B => recipe_id, C => PFK}
+  {A => recipe_citation_date_ids, B => recipe_id, C => PFK}
+  {A => recipe_mass_ids, B => recipe_id, C => PFK}
+```
