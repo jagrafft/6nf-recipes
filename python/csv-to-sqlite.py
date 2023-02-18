@@ -39,6 +39,7 @@ db_path = project_root / db_name
 if Path.exists(db_path):
     db_path.rename(project_root / f"{datetime.now().strftime('%s')}-{db_name}.bak")
 
+print(f"Connect to {db_name}...")
 # Connect to database, which implicitly creates a new database
 # due to the renaming instructions above
 connection = sqlite3.connect(db_path)
@@ -47,15 +48,17 @@ connection = sqlite3.connect(db_path)
 call(["sh", "bash/bootstrap_db.sh", db_name])
 ###
 
+print("Load data from CSVs...")
 ### Load Data from CSVs ###
-ingredients = pandas.read_csv(project_root / "data" / "ingredient_lists.csv")
-recipes = pandas.read_csv(project_root / "data" / "recipes.csv")
+ingredient_list_csv_df = pandas.read_csv(project_root / "data" / "ingredient_lists.csv")
+recipe_csv_df = pandas.read_csv(project_root / "data" / "recipes.csv")
 ###
 
+print("Transform data...")
 ### Transform data columns ###
 indexed_tuples = {}
 # Push values from CSV columns into an array
-for df in [ingredients, recipes]:
+for df in [ingredient_list_csv_df, recipe_csv_df]:
     for col in df.drop("recipe_id", axis=1):
         if data_map[col] in indexed_tuples:
             indexed_tuples[data_map[col]].extend(df[col].unique())
@@ -76,7 +79,7 @@ for (tbl, vals) in indexed_tuples.items():
     data_value_map[tbl] = {k: v for (v, k) in vals}
 
 # Populate recipe data relations
-for row in recipes.drop("recipe_id", axis=1).itertuples(index=False):
+for row in recipe_csv_df.drop("recipe_id", axis=1).itertuples(index=False):
     url_id = data_value_map["data_urls"][row.url]
 
     row_dict = row._asdict()
@@ -95,13 +98,13 @@ for row in recipes.drop("recipe_id", axis=1).itertuples(index=False):
 # Map URL strings to recipe_ids
 recipe_id_map = {}
 
-for row in recipes[["url", "recipe_id"]].itertuples(index=False):
+for row in recipe_csv_df[["url", "recipe_id"]].itertuples(index=False):
     recipe_id_map[row.recipe_id] = data_value_map["data_urls"][row.url]
 
 # Create relation from maps
 bp_relation_tuples = []
 
-for (i, row) in enumerate(ingredients.itertuples(index=False)):
+for (i, row) in enumerate(ingredient_list_csv_df.itertuples(index=False)):
     bp_relation_tuples.append(
         (
             recipe_id_map[row.recipe_id],
@@ -111,6 +114,7 @@ for (i, row) in enumerate(ingredients.itertuples(index=False)):
     )
 ###
 
+print(f"Populate {db_name}...")
 ### Populate SQLite database ###
 cursor = connection.cursor()
 
@@ -127,11 +131,106 @@ cursor.executemany(
 connection.commit()
 ###
 
-# validate (TODO design)
-### Validate Database Tables ###
+print(f"Validate {db_name}...")
+### Validate Contents of Database ###
+ingredient_list_view = cursor.execute(
+    """
+SELECT
+    ingredient_list.ingredient,
+    ingredient_list.ratio,
+    data_urls.url
+FROM ingredient_list
+LEFT JOIN data_urls ON
+    ingredient_list.id = data_urls.id;
+"""
+)
+
+ingredient_list_df = pandas.DataFrame(
+    ingredient_list_view.fetchall(),
+    columns=["ingredient", "bakers_percentage", "url"],
+)
+
+ingredient_list_csv_df = ingredient_list_csv_df.merge(
+    recipe_csv_df[["recipe_id", "url"]],
+    on="recipe_id",
+    how="inner",
+)
+
+ingredient_list_csv_df = ingredient_list_csv_df.drop("recipe_id", axis=1)
+ingredient_list_csv_df = ingredient_list_csv_df.set_index(["url", "ingredient"])
+ingredient_list_df = ingredient_list_df.set_index(["url", "ingredient"])
+
+ingredient_list_csv_df.sort_index(inplace=True)
+ingredient_list_df.sort_index(inplace=True)
+
+ingredient_list_data_compare = ingredient_list_df.compare(
+    ingredient_list_csv_df, align_axis=0
+)
+
+recipe_view = cursor.execute(
+    """
+SELECT
+    citations.recipe,
+    citations.title,
+    citations.author,
+    citations.publication_date,
+    citations.access_date,
+    default_masses.grams,
+    citations.url
+FROM citations
+LEFT JOIN default_masses ON
+    citations.id = default_masses.id
+"""
+)
+
+recipe_df = pandas.DataFrame(
+    recipe_view.fetchall(),
+    columns=[
+        "title",
+        "citation_title",
+        "author",
+        "date",
+        "access_date",
+        "default_mass",
+        "url",
+    ],
+)
+recipe_csv_df = recipe_csv_df.drop("recipe_id", axis=1)
+recipe_csv_df = recipe_csv_df.set_index("url")
+recipe_df = recipe_df.set_index("url")
+
+recipe_csv_df.sort_index(inplace=True)
+recipe_df.sort_index(inplace=True)
+
+recipe_data_compare = recipe_df.compare(recipe_csv_df, align_axis=0)
+
+error_flag = False
+# Report results of data verification
+if ingredient_list_data_compare.empty:
+    print("   - Ingredient data verified")
+else:
+    print("Ingredient data failed verification, writing results to CSV...")
+    error_flag = True
+    ingredient_list_data_compare.to_csv(
+        f"{datetime.now().strftime('%Y-%m-%d')}-ingredient_list_data_compare-FAILED.csv"
+    )
+
+if recipe_data_compare.empty:
+    print("   - Recipe data verified")
+else:
+    print("Recipe data failed verification, writing results to CSV...")
+    error_flag = True
+    recipe_data_compare.to_csv(
+        f"{datetime.now().strftime('%Y-%m-%d')}-recipe_data_compare-FAILED.csv"
+    )
 ###
 
 # Close database connection
 cursor.close()
 connection.close()
+
 # DONE
+if error_flag:
+    print("WARNING: Database verification FAILED, check veracity of input data")
+else:
+    print(f"COMPLETE: {db_name} populated and verified")

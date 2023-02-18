@@ -1,4 +1,4 @@
-CREATE VIEW ingredients_list AS
+CREATE VIEW ingredient_list AS
 SELECT
   data_urls.id,
   data_ingredients.ingredient,
