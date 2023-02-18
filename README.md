@@ -4,7 +4,7 @@ Bootstrap scripts for the [SQLite][sqlite] databased used by [Baker's Percentage
 
 ## Using
 1. Install [Poetry][pypoetry]
-1. https://python-poetry.org/docs/#installation
+   - https://python-poetry.org/docs/#installation
 1. Clone repository
 1. `cd 6nf-recipes`
 1. `poetry install`
