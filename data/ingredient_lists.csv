@@ -1,0 +1,32 @@
+recipe_id,ingredient,bakers_percentage
+1,bread flour,1.00000
+1,water,0.66666
+1,extra-virgin olive oil,0.05079
+1,sugar,0.02381
+1,yeast,0.01587
+1,salt,0.01587
+2,"'00' flour",1.00000
+2,water,0.65000
+2,kosher salt,0.02000
+2,yeast,0.015000
+3,bread flour,1.00000
+3,water,0.69400
+3,extra-virgin olive oil,0.21200
+3,kosher salt,0.02000
+3,yeast,0.01000
+4,all purpose flour,0.86000
+4,whole wheat flour,0.07400
+4,rye flour,0.06600
+4,water,0.75000
+4,yeast,0.02000
+4,salt,0.01500
+5,bread flour,0.90000
+5,whole wheat flour,0.10000
+5,water,0.75000
+5,leaven,0.20000
+5,salt,0.02000
+6,bread flour,1.00000
+6,kosher salt,0.02500
+6,yeast,0.01000
+6,water,0.68750
+6,extra-virgin olive oil,0.02000

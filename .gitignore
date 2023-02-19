@@ -1,5 +1,8 @@
 *~
 \#*
+
+*.bak
 *.db
 
 .DS_Store
+dbml-error.log
